@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -9,7 +11,6 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -18,7 +19,6 @@ public class AdminControllers {
     private final UserService userService;
 
     private User userToRepeatEdit;
-    private Set<Role> roles;
     private boolean emailError;
 
     public AdminControllers(PasswordEncoder passwordEncoder, UserService userService) {
@@ -35,9 +35,12 @@ public class AdminControllers {
     }
 
     @GetMapping("/show-edit-user")
-    public String showEditUser(@RequestParam long id, ModelMap model) {
+    public String showEditUser(@RequestParam long id, Authentication authentication, ModelMap model) {
+        List<String> admRoles = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).toList();
+        List<Role> roles = Role.getListOfRoles(admRoles.contains("SUPER_ADMIN") ? 3 : 2);
         User user = userService.getUserById(id);
-        roles = user.getRoles();
+        model.addAttribute("aRoles", roles);
         model.addAttribute("user", user);
         model.addAttribute("title", "Страница администратора");
         model.addAttribute("title2", "Редактирование пользователя");
@@ -45,7 +48,11 @@ public class AdminControllers {
     }
 
     @GetMapping("/show-repeat-edit-user")
-    public String showRepeatEditUser(ModelMap model) {
+    public String showRepeatEditUser(ModelMap model, Authentication authentication) {
+        List<String> admRoles = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).toList();
+        List<Role> roles = Role.getListOfRoles(admRoles.contains("SUPER_ADMIN") ? 3 : 2);
+        model.addAttribute("aRoles", roles);
         model.addAttribute("user", userToRepeatEdit);
         model.addAttribute("email_err", emailError);
         model.addAttribute("title", "Страница администратора");
@@ -63,14 +70,17 @@ public class AdminControllers {
             userToRepeatEdit = user;
             return "redirect:/admin/show-repeat-edit-user";
         }
-        user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.updateUser(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/show-add-user")
-    public String showAddUser(ModelMap model) {
+    public String showAddUser(ModelMap model, Authentication authentication) {
+        List<String> admRoles = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).toList();
+        List<Role> roles = Role.getListOfRoles(admRoles.contains("SUPER_ADMIN") ? 3 : 2);
+        model.addAttribute("aRoles", roles);
         model.addAttribute("user", new User());
         model.addAttribute("title", "Страница администратора");
         model.addAttribute("title2", "Новый пользователь");
@@ -78,7 +88,11 @@ public class AdminControllers {
     }
 
     @GetMapping("/show-repeat-add-user")
-    public String showRepeatAddUser(ModelMap model) {
+    public String showRepeatAddUser(ModelMap model, Authentication authentication) {
+        List<String> admRoles = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).toList();
+        List<Role> roles = Role.getListOfRoles(admRoles.contains("SUPER_ADMIN") ? 3 : 2);
+        model.addAttribute("aRoles", roles);
         model.addAttribute("user", userToRepeatEdit);
         model.addAttribute("email_err", emailError);
         model.addAttribute("title", "Страница администратора");
@@ -95,7 +109,6 @@ public class AdminControllers {
             userToRepeatEdit = user;
             return "redirect:/admin/show-repeat-add-user";
         }
-        user.setRoles(Role.getSetOfRoles(1));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.saveUser(user);
         return "redirect:/admin";
@@ -113,7 +126,6 @@ public class AdminControllers {
     public String removeUser(@PathVariable long id) {
         userService.removeUserById(id);
         userToRepeatEdit = null;
-        roles = null;
         return "redirect:/admin";
     }
 }

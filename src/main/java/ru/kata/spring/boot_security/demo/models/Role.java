@@ -55,6 +55,15 @@ public class Role implements GrantedAuthority {
 
     public static Set<Role> getSetOfRoles(int numberOfRoles) {
         Set<Role> roles = new HashSet<>();
+//        for (int i = 0; i < numberOfRoles; i++) {
+//            roles.add(new Role(rolesTypes[i].name()));
+//        }
+        IntStream.range(0, numberOfRoles).mapToObj(n -> new Role(rolesTypes[n].name())).forEach(roles::add);
+        return roles;
+    }
+
+    public static List<Role> getListOfRoles(int numberOfRoles) {
+        List<Role> roles = new ArrayList<>();
         IntStream.range(0, numberOfRoles).mapToObj(n -> new Role(rolesTypes[n].name())).forEach(roles::add);
         return roles;
     }
@@ -66,4 +75,27 @@ public class Role implements GrantedAuthority {
     public int hashCode() {
         return Objects.hash(name);
     }
+
+//    @Override
+//    public int hashCode() {
+//        final int prime = 31;
+//        int result = 1;
+//        result = prime * result + ((id == 0) ? 0 : Long.valueOf(id).hashCode());
+//        return result;
+//    }
+
+//    @Override
+//    public boolean equals(Object obj) {
+//        if (this == obj) {
+//            return true;
+//        }
+//        if (obj == null) {
+//            return false;
+//        }
+//        if (getClass() != obj.getClass()) {
+//            return false;
+//        }
+//        Role other = (Role) obj;
+//        return id == 0 ? other.id == 0 : id == other.id;
+//    }
 }
