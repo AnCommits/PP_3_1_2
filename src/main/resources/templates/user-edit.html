@@ -27,25 +27,6 @@
             </tr>
             </tbody>
         </table>
-
-        <label>Roles:
-            <div th:each="role : ${aRoles}">
-                <input type="checkbox" name="roles"
-                       th:text="${role.name}"
-                       th:value="${role.name}"
-                       th:field="*{roles}"
-                />
-            </div>
-        </label>
-
-        <!--            <ul th:each="role : ${roles}">-->
-        <!--                <li>-->
-        <!--                    <input type="checkbox" th:name="${role.name}" th:value="${role.name}">-->
-        <!--                    <label th:text="${role.name.toLowerCase()}"></label>-->
-        <!--                </li>-->
-        <!--            </ul>-->
-
-
     </form>
 </main>
 </body>

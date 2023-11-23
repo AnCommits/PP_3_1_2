@@ -107,14 +107,23 @@
             <table style="margin: auto; padding-top: 4px">
                 <tbody>
                 <tr>
-                    <td style="padding: 0 5px; text-align: center">Пароль*</td>
-                    <td></td>
+                    <td style="margin: 0 10px; text-align: center">Пароль*</td>
+                    <td rowspan="4" style="width: 8px"></td>
+                    <td>Роли</td>
+                    <td rowspan="4" style="width: 8px"></td>
                     <td>Дата рождения</td>
                 </tr>
                 <tr>
                     <td><input type="password" minlength="2" size="24" required
                                th:field="${user.password}"></td>
-                    <td></td>
+                    <td rowspan="3" style="vertical-align: top">
+                        <div th:each="role : ${aRoles}">
+                            <input type="checkbox" name="roles"
+                                   th:text="${role.name}"
+                                   th:value="${role.name}"
+                                   th:field="*{roles}">
+                        </div>
+                    </td>
                     <td rowspan="3" style="vertical-align: top">
                         <input type="date" th:field="${user.birthDate}"></td>
                 </tr>
