@@ -13,7 +13,10 @@
 <main>
     <h2 style="text-align: center" th:text="${title2}"></h2>
     <form action="save-user" th:object="${user}" th:method="${user.id == 0} ? 'post' : 'put'">
-        <table th:replace="~{blocks/user-blocks :: edit_user_table}"></table>
+        <table sec:authorize="hasAuthority('ADMIN')"
+               th:replace="~{blocks/admin-blocks :: edit_user_table}"></table>
+        <table sec:authorize="!hasAuthority('ADMIN')"
+               th:replace="~{blocks/user-blocks :: edit_user_table}"></table>
         <input type="text" hidden="hidden" th:field="${user.id}">
         <input type="checkbox" hidden="hidden" th:field="${user.locked}">
         <table style="border: none; margin: auto; padding-top: 8px">

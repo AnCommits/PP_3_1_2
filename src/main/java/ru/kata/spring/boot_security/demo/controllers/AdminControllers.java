@@ -106,7 +106,7 @@ public class AdminControllers {
         User user = userService.getUserById(id);
         user.setLocked(!user.isLocked());
         userService.updateUser(user);
-        return "redirect:/admin"; // Что возвращать из метода, чтобы страница не перезагружалась?
+        return "redirect:/admin";
     }
 
     @DeleteMapping("/remove-user/{id}")
