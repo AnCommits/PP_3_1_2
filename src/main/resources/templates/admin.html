@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <title>Admin page</title>
+</head>
+<body>
+<header th:replace="~{blocks/admin-blocks :: admin_header}"></header>
+<main>
+    <h2 style="text-align: center">Список пользователей</h2>
+    <table th:replace="~{blocks/admin-blocks :: users_list}"></table>
+    <table style="margin: auto; padding-top: 12px">
+        <tbody>
+        <tr>
+            <td><a class="button" th:href="@{admin/show-add-user}">Добавить пользователя</a></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

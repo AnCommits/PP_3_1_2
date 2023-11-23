@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <title>Вход</title>
+</head>
+<body>
+<div style="padding-top: 100px; text-align: center">
+    <form th:action="login" method="post">
+        <p>Вход</p>
+        <div th:if="${param.error}" style="color: red">Пользователь с такой комбинацией имя-пароль не найден</div>
+        <p>
+            <label for="username">е-мэйл:</label>
+            <input type="text" id="username" name="username" placeholder="email" size="25" required autofocus>
+        </p>
+        <p>
+            <label for="password">пароль:</label>
+            <input type="password" id="password" name="password" placeholder="Password" size="25" required>
+        </p>
+        <button type="submit" class="button">Войти</button>
+    </form>
+</div>
+</body>
+</html>

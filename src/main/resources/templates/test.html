@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <title>Test</title>
+    <style>
+        .btn {
+            font-family: Arial, Helvetica, sans-serif;
+            text-decoration: none;
+            background-color: #e5e5e5;
+            color: #000000;
+            padding: 16px;
+            font-size: 16px;
+            border: 1px solid #000000;
+            border-radius: 4px;
+            /*font-size: 14px;*/
+            /*padding: 2px 8px;*/
+            transition: all 0.2s ease;
+        }
+
+        .dropdown {
+            position: absolute;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: orange;
+            min-width: 160px;
+            z-index: 1;
+        }
+
+        .dropdown-content .dropdown-level {
+            color: black;
+            padding: 2px 4px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content .dropdown-level:hover {
+            background-color: yellow;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .btn:hover, .dropdown:hover .btn {
+            /*background-color: #c7ffd0;*/
+            color: #001cab;
+            border: 1px solid #001cab;
+        }
+
+    </style>
+</head>
+<body>
+
+<form action="/te2" method="post" th:object="${user}" > // user вместо ${user} ?
+    <ul>
+        <li th:each="role : ${roles}">
+            <div>
+                <input type="checkbox" th:field="*{}">
+            </div>
+        </li>
+    </ul>
+</form>
+
+</body>
+</html>
+
+<!--<div class="dropdown-content" th:each="role : ${user.roles()}">-->
+<!--    <div class="dropdown-level">-->
+<!--        <input type="radio" id="radiobutton" name="group">-->
+<!--        <label for="radiobutton" th:text="${role}"></label>-->
+<!--    </div>-->
+<!--</div>-->

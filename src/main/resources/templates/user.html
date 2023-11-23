@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <title>User page</title>
+</head>
+<body>
+<header th:replace="~{blocks/user-blocks :: user_header}"></header>
+<main>
+    <h2 style="text-align: center">Мои данные</h2>
+    <table style="border: 0; margin: auto">
+        <thead>
+        <tr>
+            <th style="border-bottom: 1px solid; padding: 4px">
+                Имя
+            </th>
+            <th style="border-bottom: 1px solid; padding: 4px">
+                Фамилия
+            </th>
+            <th style="border-bottom: 1px solid; padding: 4px">
+                Е-мэйл
+            </th>
+            <th style="border-bottom: 1px solid; padding: 4px">
+                Дата рожд.
+            </th>
+            <th style="border-bottom: 1px solid; padding: 4px">
+                Дата, время записи
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${user.firstName}"></td>
+            <td th:text="${user.lastName}"></td>
+            <td th:text="${user.email}"></td>
+            <td style="text-align: center" th:text="${user.birthDateToString()}"></td>
+            <td style="text-align: center" th:text="${user.recordDateTimeToString()}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <table sec:authorize="hasAuthority('SUPER_USER')" style="margin: auto; padding-top: 16px">
+        <tbody>
+        <tr>
+            <td>
+                <a th:attr="href='/user/show-edit-user?id=' + ${user.id}" class="button">Редактировать</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

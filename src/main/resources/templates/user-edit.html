@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <title th:text="${title}"></title>
+</head>
+<body>
+<header th:replace="~{blocks/user-blocks :: user_header}"></header>
+<main>
+    <h2 style="text-align: center" th:text="${title2}"></h2>
+    <form action="save-user" th:object="${user}" th:method="${user.id == 0} ? 'post' : 'put'">
+        <table th:replace="~{blocks/user-blocks :: edit_user_table}"></table>
+        <input type="text" hidden="hidden" th:field="${user.id}">
+        <input type="checkbox" hidden="hidden" th:field="${user.locked}">
+        <table style="border: none; margin: auto; padding-top: 8px">
+            <tbody>
+            <tr>
+                <td><input type="submit" class="button" value="Готово"></td>
+                <td><input type="button" class="button" onclick="history.back();" value="Отмена"></td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</main>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <title>Home</title>
+</head>
+<body>
+<header>
+    <table style="width:100%; background-color: #e7fff3">
+        <tbody>
+        <tr>
+            <td style="text-align: center; font-weight: bold; font-size: larger; width: 100%; border: 1px solid">
+                Главная страница
+            </td>
+            <span sec:authorize="isAnonymous()">
+                <td><a href="/login" class="button">Войти</a></td>
+                <td><a href="/guest/sign-up" class="button">Зарегистрироваться</a></td>
+            </span>
+            <span sec:authorize="isAuthenticated()">
+                <td sec:authorize="hasAuthority('ADMIN')">
+                    <a href="/admin" class="button">Страница&nbsp;администатора</a>
+                </td>
+                <td><a href="/user" class="button">Моя&nbsp;страница</a></td>
+                <td><a href="/logout" class="button">Выйти</a></td>
+            </span>
+        </tr>
+        </tbody>
+    </table>
+</header>
+<main>
+    <div style="padding-top: 100px; text-align: center">
+        <h1>Главная страница</h1>
+    </div>
+</main>
+</body>
+</html>
