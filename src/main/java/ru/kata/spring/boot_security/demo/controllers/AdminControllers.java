@@ -11,6 +11,7 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -36,10 +37,11 @@ public class AdminControllers {
 
     @GetMapping("/show-edit-user")
     public String showEditUser(@RequestParam long id, Authentication authentication, ModelMap model) {
-        List<String> admRoles = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority).toList();
-        List<Role> roles = Role.getListOfRoles(admRoles.contains("SUPER_ADMIN") ? 3 : 2);
+        // After updating data the email and/or roles in authentication are not the same as in DB
+        long editorIdFromPrincipal = ((User) authentication.getPrincipal()).getId();
+        User editor = userService.getUserById(editorIdFromPrincipal);
         User user = userService.getUserById(id);
+        List<Role> roles = Role.getListOfRoles(editor.getMainRole().equals("SUPER_ADMIN") ? 3 : 2);
         model.addAttribute("aRoles", roles);
         model.addAttribute("user", user);
         model.addAttribute("title", "Страница администратора");
