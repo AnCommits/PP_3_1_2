@@ -26,6 +26,12 @@ public class Role implements GrantedAuthority {
     @Transient
     public final static RolesType[] allRolesTypes = RolesType.values();
 
+    @Transient
+    public final static List<Role> allRoles = new ArrayList<>();;
+    static {
+        Arrays.stream(allRolesTypes).map(r -> new Role(r.name())).forEach(allRoles::add);
+    }
+
     public Role(String name) {
         setName(name);
     }
@@ -53,9 +59,9 @@ public class Role implements GrantedAuthority {
         ADMIN
     }
 
-    public static List<String> listOfAllRoles() {
-        return Arrays.stream(allRolesTypes).map(Enum::name).toList();
-    }
+//    public static List<String> listOfAllRoles() {
+//        return Arrays.stream(allRolesTypes).map(Enum::name).toList();
+//    }
 
     // todo delete
 

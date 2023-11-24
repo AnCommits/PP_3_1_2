@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -36,9 +35,10 @@ public class AdminControllers {
     }
 
     @GetMapping("/show-edit-user")
-    public String showEditUser(@RequestParam long id, Authentication authentication, ModelMap model) {
+    public String showEditUser(@RequestParam long id, ModelMap model) {
         User user = userService.getUserById(id);
-        List<Role> roles = Role.getListOfRoles(Role.allRolesTypes.length);
+        List<Role> roles = Role.allRoles;
+        roles.remove(new Role("ADMIN"));
         model.addAttribute("aRoles", roles);
         model.addAttribute("user", user);
         model.addAttribute("title", "Страница администратора");
@@ -47,9 +47,8 @@ public class AdminControllers {
     }
 
     @GetMapping("/show-repeat-edit-user")
-    public String showRepeatEditUser(ModelMap model, Authentication authentication) {
-        User editor = ((User) authentication.getPrincipal());
-        List<Role> roles = Role.getListOfRoles(editor.getMainRole().equals("SUPER_ADMIN") ? 3 : 2);
+    public String showRepeatEditUser(ModelMap model) {
+        List<Role> roles = userToRepeatEdit.getRoles();
         model.addAttribute("aRoles", roles);
         model.addAttribute("user", userToRepeatEdit);
         model.addAttribute("message", message.toString());
@@ -84,10 +83,9 @@ public class AdminControllers {
     }
 
     @GetMapping("/show-add-user")
-    public String showAddUser(ModelMap model, Authentication authentication) {
-
-        User editor = ((User) authentication.getPrincipal());
-        List<Role> roles = Role.getListOfRoles(editor.getMainRole().equals("SUPER_ADMIN") ? 3 : 2);
+    public String showAddUser(ModelMap model) {
+        List<Role> roles = Role.allRoles;
+        roles.remove(new Role("ADMIN"));
         model.addAttribute("aRoles", roles);
         model.addAttribute("user", new User());
         model.addAttribute("title", "Страница администратора");
@@ -96,9 +94,8 @@ public class AdminControllers {
     }
 
     @GetMapping("/show-repeat-add-user")
-    public String showRepeatAddUser(ModelMap model, Authentication authentication) {
-        User editor = ((User) authentication.getPrincipal());
-        List<Role> roles = Role.getListOfRoles(editor.getMainRole().equals("SUPER_ADMIN") ? 3 : 2);
+    public String showRepeatAddUser(ModelMap model) {
+        List<Role> roles = userToRepeatEdit.getRoles();
         model.addAttribute("aRoles", roles);
         model.addAttribute("user", userToRepeatEdit);
         model.addAttribute("message", message.toString());
