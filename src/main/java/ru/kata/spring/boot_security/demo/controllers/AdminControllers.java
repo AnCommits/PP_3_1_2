@@ -37,13 +37,8 @@ public class AdminControllers {
 
     @GetMapping("/show-edit-user")
     public String showEditUser(@RequestParam long id, Authentication authentication, ModelMap model) {
-        User editor = ((User) authentication.getPrincipal());
         User user = userService.getUserById(id);
         List<Role> roles = Role.getListOfRoles(Role.allRolesTypes.length);
-        roles.remove(new Role("SUPER_ADMIN"));
-        if (!editor.hasRole("SUPER_ADMIN")) {
-            roles.remove(new Role("ADMIN"));
-        }
         model.addAttribute("aRoles", roles);
         model.addAttribute("user", user);
         model.addAttribute("title", "Страница администратора");
@@ -90,6 +85,7 @@ public class AdminControllers {
 
     @GetMapping("/show-add-user")
     public String showAddUser(ModelMap model, Authentication authentication) {
+
         User editor = ((User) authentication.getPrincipal());
         List<Role> roles = Role.getListOfRoles(editor.getMainRole().equals("SUPER_ADMIN") ? 3 : 2);
         model.addAttribute("aRoles", roles);

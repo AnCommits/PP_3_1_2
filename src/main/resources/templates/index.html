@@ -18,7 +18,6 @@
             </td>
             <span sec:authorize="isAnonymous()">
                 <td><a href="/login" class="button">Войти</a></td>
-                <td><a href="/guest/sign-up" class="button">Зарегистрироваться</a></td>
             </span>
             <span sec:authorize="isAuthenticated()">
                 <td sec:authorize="hasAnyAuthority('SUPER_ADMIN', 'ADMIN')">
@@ -32,7 +31,7 @@
     </table>
 </header>
 <main>
-    <div style="padding-top: 100px; text-align: center">
+    <div style="padding-top: 20px; text-align: center">
         <h1>Главная страница</h1>
     </div>
 </main>

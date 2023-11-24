@@ -8,7 +8,22 @@
     <title>User page</title>
 </head>
 <body>
-<header th:replace="~{blocks/user-blocks :: user_header}"></header>
+<header th:fragment="user_header" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <table style="width:100%; background-color: #e7fff3">
+        <tbody>
+        <tr>
+            <td style="text-align: center; font-weight: bold; font-size: larger; width: 100%; border: 1px solid"
+                th:text="${title}">
+            </td>
+            <td><a class="button" href="/">Главная</a></td>
+            <td sec:authorize="hasAnyAuthority('ADMIN')">
+                <a href="/admin" class="button">Страница&nbsp;администратора</a>
+            </td>
+            <td><a href="/logout" class="button">Выйти</a></td>
+        </tr>
+        </tbody>
+    </table>
+</header>
 <main>
     <h2 style="text-align: center">Мои данные</h2>
     <table style="border: 0; margin: auto">
@@ -36,35 +51,19 @@
         </thead>
         <tbody>
         <tr>
-            <td th:text="${user.firstName}"></td>
-            <td th:text="${user.lastName}"></td>
-            <td th:text="${user.email}"></td>
-
-            <td th:text="${user.getMainRole().toLowerCase()}"></td>
-
-
-            <div th:with="roles=${user.rolesForViews}">
+            <td style="vertical-align: top" th:text="${user.firstName}"></td>
+            <td style="vertical-align: top" th:text="${user.lastName}"></td>
+            <td style="vertical-align: top" th:text="${user.email}"></td>
+            <td style="vertical-align: top" th:with="roles=${user.rolesForViews}">
                 <details>
                     <summary th:text="${roles.firstRole}"></summary>
                     <span th:each="line : ${roles.otherRoles}">
                         <div th:text="'&nbsp;&nbsp;&nbsp;&nbsp;' + ${line}"></div>
                     </span>
                 </details>
-            </div>
-
-
-
-            <td style="text-align: center" th:text="${user.birthDateToString()}"></td>
-            <td style="text-align: center" th:text="${user.recordDateTimeToString()}"></td>
-        </tr>
-        </tbody>
-    </table>
-    <table sec:authorize="hasAuthority('CAN_WRITE')" style="margin: auto; padding-top: 16px">
-        <tbody>
-        <tr>
-            <td>
-                <a th:attr="href='/user/show-edit-user?id=' + ${user.id}" class="button">Редактировать</a>
             </td>
+            <td style="vertical-align: top; text-align: center" th:text="${user.birthDateToString()}"></td>
+            <td style="vertical-align: top; text-align: center" th:text="${user.recordDateTimeToString()}"></td>
         </tr>
         </tbody>
     </table>

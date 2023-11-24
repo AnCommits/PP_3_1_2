@@ -26,99 +26,82 @@ public class InitDataBase {
     @PostConstruct
     public void initUsers() {
         if (userService.countUsers() == 0) {
-            initSuperAdmin();
             initAdmin();
-
-            initSuperUser();
             initUser();
-
-            initSuperManager();
-            initManager();
-
-            initSuperHr();
-            initHr();
+            initManager1();
+            initManager2();
+            initHr1();
+            initHr2();
+            initBoss();
         }
-    }
-
-    public void initSuperAdmin() {
-        List<Role> roles = new ArrayList<>();
-        roles.add(new Role("SUPER_ADMIN"));
-        roles.add(new Role("USER"));
-        roles.add(new Role("CAN_WRITE"));
-        User user = new User(null, null,
-                "1", passwordEncoder.encode("1"),
-                null, roles, false);
-        userService.saveUser(user);
     }
 
     public void initAdmin() {
         List<Role> roles = new ArrayList<>();
         roles.add(new Role("ADMIN"));
         roles.add(new Role("USER"));
-        roles.add(new Role("CAN_WRITE"));
         User user = new User(null, null,
-                "2", passwordEncoder.encode("2"),
+                "1", passwordEncoder.encode("1"),
                 null, roles, false);
-        userService.saveUser(user);
-    }
-
-    public void initSuperUser() {
-        List<Role> roles = new ArrayList<>();
-        roles.add(new Role("USER"));
-        roles.add(new Role("CAN_WRITE"));
-        User user = new User("Уильям", "Остин Берт",
-                "3", passwordEncoder.encode("3"),
-                new GregorianCalendar(1792, Calendar.JUNE, 13), roles, false);
         userService.saveUser(user);
     }
 
     public void initUser() {
         List<Role> roles = new ArrayList<>();
         roles.add(new Role("USER"));
-        User user = new User("Мария", "Кюри",
-                "4", passwordEncoder.encode("4"),
-                new GregorianCalendar(1867, Calendar.NOVEMBER, 7), roles, false);
+        User user = new User("Уильям", "Остин Берт",
+                "2", passwordEncoder.encode("2"),
+                new GregorianCalendar(1792, Calendar.JUNE, 13), roles, false);
         userService.saveUser(user);
     }
 
-    public void initSuperManager() {
+    public void initManager1() {
         List<Role> roles = new ArrayList<>();
         roles.add(new Role("MANAGER"));
         roles.add(new Role("USER"));
-        roles.add(new Role("CAN_WRITE"));
-        User user = new User("Петр", "Супер_менеджер",
-                "sm", passwordEncoder.encode("sm"),
-                new GregorianCalendar(2000, Calendar.JANUARY, 1), roles, false);
-        userService.saveUser(user);
-    }
-
-    public void initManager() {
-        List<Role> roles = new ArrayList<>();
-        roles.add(new Role("MANAGER"));
-        roles.add(new Role("USER"));
-        User user = new User("Вася", "Менеджер",
+        User user = new User("Вася", "Менеджер1",
                 "m", passwordEncoder.encode("m"),
                 new GregorianCalendar(2000, Calendar.JANUARY, 1), roles, false);
         userService.saveUser(user);
     }
 
-    public void initSuperHr() {
+    public void initManager2() {
         List<Role> roles = new ArrayList<>();
-        roles.add(new Role("HR"));
+        roles.add(new Role("MANAGER"));
         roles.add(new Role("USER"));
-        roles.add(new Role("CAN_WRITE"));
-        User user = new User("Мария", "Решает_все",
-                "sh", passwordEncoder.encode("sh"),
+        User user = new User("Петр", "Менеджер2",
+                "mm", passwordEncoder.encode("mm"),
                 new GregorianCalendar(2000, Calendar.JANUARY, 1), roles, false);
         userService.saveUser(user);
     }
 
-    public void initHr() {
+    public void initHr1() {
         List<Role> roles = new ArrayList<>();
         roles.add(new Role("HR"));
         roles.add(new Role("USER"));
         User user = new User("Катя", "Катерина",
                 "h", passwordEncoder.encode("h"),
+                new GregorianCalendar(2000, Calendar.JANUARY, 1), roles, false);
+        userService.saveUser(user);
+    }
+
+    public void initHr2() {
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role("HR"));
+        roles.add(new Role("USER"));
+        User user = new User("Маша", "Решает_все",
+                "hh", passwordEncoder.encode("hh"),
+                new GregorianCalendar(2000, Calendar.JANUARY, 1), roles, false);
+        userService.saveUser(user);
+    }
+
+    public void initBoss() {
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role("MANAGER"));
+        roles.add(new Role("HR"));
+        roles.add(new Role("USER"));
+        User user = new User("Кот", "Матроскин",
+                "k", passwordEncoder.encode("k"),
                 new GregorianCalendar(2000, Calendar.JANUARY, 1), roles, false);
         userService.saveUser(user);
     }

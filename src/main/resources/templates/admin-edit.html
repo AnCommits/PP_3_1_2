@@ -13,7 +13,73 @@
 <main>
     <h2 style="text-align: center" th:text="${title2}"></h2>
     <form action="save-user" th:object="${user}" th:method="${user.id == 0} ? 'post' : 'put'">
-        <table th:replace="~{blocks/admin-blocks :: edit_user_table}"></table>
+<!--        <table th:replace="~{blocks/admin-blocks :: edit_user_table}"></table>-->
+
+
+        <table th:fragment="edit_user_table" style="margin: auto">
+            <tbody>
+            <tr>
+                <td>
+                    <table style="margin: auto; padding-top: 16px">
+                        <tbody>
+                        <tr>
+                            <td colspan="3" style="color: red; text-align: center"
+                                th:text="${message}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0 5px; text-align: center"><label for="first_name">Имя</label></td>
+                            <td style="padding: 0 5px; text-align: center"><label for="last_name">Фамилия</label></td>
+                            <td style="padding: 0 5px; text-align: center"><label for="email">Е-мэйл*</label></td>
+                        </tr>
+                        <tr>
+                            <td><input id="first_name" type="text" size="15" th:field="${user.firstName}"></td>
+                            <td><input id="last_name" type="text" size="20" th:field="${user.lastName}"></td>
+                            <td><input id="email" type="text" size="25" required th:field="${user.email}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table style="margin: auto; padding-top: 4px">
+                        <tbody>
+                        <tr>
+                            <td style="margin: 0 10px; text-align: center">Пароль*</td>
+                            <td rowspan="4" style="width: 8px"></td>
+                            <td>Роли</td>
+                            <td rowspan="4" style="width: 8px"></td>
+                            <td>Дата рождения</td>
+                        </tr>
+                        <tr>
+                            <td><input type="password" minlength="2" size="24" required
+                                       th:field="${user.password}"></td>
+                            <td rowspan="3" style="vertical-align: top">
+                                <div th:each="role : ${aRoles}">
+                                    <input type="checkbox" name="roles"
+                                           th:text="${role.name}"
+                                           th:value="${role.name}"
+                                           th:field="*{roles}">
+                                </div>
+                            </td>
+                            <td rowspan="3" style="vertical-align: top">
+                                <input type="date" th:field="${user.birthDate}"></td>
+                        </tr>
+                        <tr>
+                            <td>Пароль еще раз*</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><input type="password" size="24" disabled="disabled"></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+
+
         <input type="text" hidden="hidden" th:field="${user.id}">
         <input type="checkbox" hidden="hidden" th:field="${user.locked}">
         <table style="border: none; margin: auto; padding-top: 8px">

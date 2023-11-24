@@ -50,18 +50,14 @@ public class Role implements GrantedAuthority {
         USER,
         MANAGER,
         HR,
-        CAN_WRITE,
-        ADMIN,
-        SUPER_ADMIN
+        ADMIN
+    }
+
+    public static List<String> listOfAllRoles() {
+        return Arrays.stream(allRolesTypes).map(Enum::name).toList();
     }
 
     // todo delete
-
-//    public static Set<Role> getSetOfRoles(int numberOfRoles) {
-//        Set<Role> roles = new HashSet<>();
-//        IntStream.range(0, numberOfRoles).mapToObj(n -> new Role(allRolesTypes[n].name())).forEach(roles::add);
-//        return roles;
-//    }
 
     public static List<Role> getListOfRoles(int numberOfRoles) {
         List<Role> roles = new ArrayList<>();
