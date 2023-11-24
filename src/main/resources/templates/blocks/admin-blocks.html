@@ -26,7 +26,7 @@
         <th style="border-bottom: 1px solid; padding: 4px">Имя</th>
         <th style="border-bottom: 1px solid; padding: 4px">Фамилия</th>
         <th style="border-bottom: 1px solid; padding: 4px">Е-мэйл</th>
-        <th style="border-bottom: 1px solid; padding: 4px">Роль</th>
+        <th style="border-bottom: 1px solid; padding: 4px">Роли</th>
         <th style="border-bottom: 1px solid; padding: 4px">Дата рожд.</th>
         <th style="border-bottom: 1px solid; padding: 4px">Дата, время записи</th>
         <th style="border-bottom: 1px solid; padding: 4px">Заблокирован</th>
@@ -40,7 +40,16 @@
         <td th:style="${st}" th:text="${user.firstName != null} ? ${user.firstName} : '-'"></td>
         <td th:style="${st}" th:text="${user.lastName != null} ? ${user.lastName} : '-'"></td>
         <td th:style="${st}" th:text="${user.email}"></td>
-        <td th:style="${st}" th:text="${user.getMainRole().toLowerCase()}"></td>
+        <td th:style="${st}">
+            <div th:with="roles=${user.rolesForViews}">
+                <details>
+                    <summary th:text="${roles.firstRole}"></summary>
+                    <span th:each="line : ${roles.otherRoles}">
+                        <div th:text="'&nbsp;&nbsp;&nbsp;&nbsp;' + ${line}"></div>
+                    </span>
+                </details>
+            </div>
+        </td>
         <td th:style="${st} + ' text-align: center'"
             th:text="${user.birthDate != null} ? ${user.birthDateToString()} : '-'"></td>
         <td th:style="${st} + ' text-align: center'" th:text="${user.recordDateTimeToString()}"></td>

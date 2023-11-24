@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.helper.RolesForView;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
@@ -28,6 +29,7 @@ public class AdminControllers {
     @GetMapping
     public String showAllUsers(ModelMap model) {
         List<User> users = userService.getAllUsers();
+        users.forEach(u -> u.setRolesForViews(new RolesForView(u.getRolesNames())));
         model.addAttribute("users", users);
         model.addAttribute("userSave", new User());
         return "admin";
@@ -37,7 +39,11 @@ public class AdminControllers {
     public String showEditUser(@RequestParam long id, Authentication authentication, ModelMap model) {
         User editor = ((User) authentication.getPrincipal());
         User user = userService.getUserById(id);
-        List<Role> roles = Role.getListOfRoles(editor.getMainRole().equals("SUPER_ADMIN") ? 3 : 2);
+        List<Role> roles = Role.getListOfRoles(Role.allRolesTypes.length);
+        roles.remove(new Role("SUPER_ADMIN"));
+        if (!editor.hasRole("SUPER_ADMIN")) {
+            roles.remove(new Role("ADMIN"));
+        }
         model.addAttribute("aRoles", roles);
         model.addAttribute("user", user);
         model.addAttribute("title", "Страница администратора");

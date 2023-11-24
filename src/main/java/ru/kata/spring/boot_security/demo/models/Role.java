@@ -24,7 +24,7 @@ public class Role implements GrantedAuthority {
     private Set<User> user;
 
     @Transient
-    public final static RolesType[] rolesTypes = RolesType.values();
+    public final static RolesType[] allRolesTypes = RolesType.values();
 
     public Role(String name) {
         setName(name);
@@ -37,14 +37,14 @@ public class Role implements GrantedAuthority {
 
     public void setName(String name) {
         String nameInUpperCase = name.toUpperCase();
-        boolean correctName = Arrays.stream((rolesTypes))
+        boolean correctName = Arrays.stream((allRolesTypes))
                 .anyMatch(r -> r.name().equals(nameInUpperCase));
-        this.name = correctName ? nameInUpperCase : rolesTypes[0].name();
+        this.name = correctName ? nameInUpperCase : allRolesTypes[0].name();
     }
 
     /**
-     * roles preferably start with the lowest,
-     * since if the role is specified incorrectly, the first one is installed
+     * Roles preferably start with the USER,
+     * since if the role is specified incorrectly, the first one is installed.
      */
     public enum RolesType {
         USER,           // can read
@@ -53,49 +53,37 @@ public class Role implements GrantedAuthority {
         SUPER_ADMIN     // + controls admins, can't be removed or locked
     }
 
+    // todo delete
+
     public static Set<Role> getSetOfRoles(int numberOfRoles) {
         Set<Role> roles = new HashSet<>();
-//        for (int i = 0; i < numberOfRoles; i++) {
-//            roles.add(new Role(rolesTypes[i].name()));
-//        }
-        IntStream.range(0, numberOfRoles).mapToObj(n -> new Role(rolesTypes[n].name())).forEach(roles::add);
+        IntStream.range(0, numberOfRoles).mapToObj(n -> new Role(allRolesTypes[n].name())).forEach(roles::add);
         return roles;
     }
 
+    // todo delete
+
     public static List<Role> getListOfRoles(int numberOfRoles) {
         List<Role> roles = new ArrayList<>();
-        IntStream.range(0, numberOfRoles).mapToObj(n -> new Role(rolesTypes[n].name())).forEach(roles::add);
+        IntStream.range(0, numberOfRoles).mapToObj(n -> new Role(allRolesTypes[n].name())).forEach(roles::add);
         return roles;
     }
+
+    // todo delete
 
     public static Comparator<Role> roleComparator =
             Comparator.comparingInt(r -> RolesType.valueOf(r.getName()).ordinal());
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return name.equals(role.name);
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(name);
     }
-
-//    @Override
-//    public int hashCode() {
-//        final int prime = 31;
-//        int result = 1;
-//        result = prime * result + ((id == 0) ? 0 : Long.valueOf(id).hashCode());
-//        return result;
-//    }
-
-//    @Override
-//    public boolean equals(Object obj) {
-//        if (this == obj) {
-//            return true;
-//        }
-//        if (obj == null) {
-//            return false;
-//        }
-//        if (getClass() != obj.getClass()) {
-//            return false;
-//        }
-//        Role other = (Role) obj;
-//        return id == 0 ? other.id == 0 : id == other.id;
-//    }
 }

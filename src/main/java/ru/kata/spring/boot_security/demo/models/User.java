@@ -4,8 +4,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.kata.spring.boot_security.demo.helper.RolesForView;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
@@ -50,6 +50,9 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    @Transient
+    private RolesForView rolesForViews;
+
     private boolean locked;
 
     public User(String firstName, String lastName, String email, String password,
@@ -67,9 +70,15 @@ public class User implements UserDetails {
         return roles.stream().anyMatch(r -> r.getName().equals(role));
     }
 
+    public List<String> getRolesNames() {
+        return roles.stream().map(Role::getName).toList();
+    }
+
+    // todo delete
+
     public String getMainRole() {
         Optional<Role> main = roles.stream().max(Role.roleComparator);
-        return main.isPresent() ? main.get().getName() : Role.rolesTypes[0].name();
+        return main.isPresent() ? main.get().getName() : Role.allRolesTypes[0].name();
     }
 
     public String birthDateToString() {

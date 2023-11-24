@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Тестовая страница</title>
+</head>
+<body>
+
+<details class="details">
+    <summary class="details__title">role 1</summary>
+    <div class="details__content">role 2</div>
+    <div class="details__content">role 3</div>
+</details>
+
+</body>
+
+<style>
+    .details {
+        /*position: relative;*/
+        /*display: block;*/
+        /*max-width: 650px;*/
+        /*margin: 0 6px;*/
+        /*background: rgba(255,255,255,0.5);*/
+        border-radius: 4px;
+        transition: 0.2s;
+        /*overflow: hidden;*/
+    }
+
+    .details::after {
+        /*z-index: 12;*/
+        /*position: absolute;*/
+        /*right: 24px;*/
+        /*top: 15px;*/
+        /*content: "";*/
+        /*display: block;*/
+        /*width: 14px;*/
+        /*height: 14px;*/
+        /*border-right: 3px solid #425995;*/
+        /*border-bottom: 3px solid #425995;*/
+        /*transform: rotate(-45deg);*/
+        /*transform-origin: center;*/
+        transition: .2s;
+    }
+
+    /*.details[open]::after {*/
+    /*    !*transform: rotate(45deg);*!*/
+    /*}*/
+
+    /*.details[open] .details__content {*/
+    /*    !*margin-top: 0;*!*/
+    /*}*/
+
+    .details__title {
+        /*z-index: 10;*/
+        /*position: relative;*/
+        /*background: #fff;*/
+        /*border-radius: 5px;*/
+        /*padding: 12px 24px;*/
+        /*font-size: 20px;*/
+        cursor: pointer;
+        /*list-style: none;*/
+        /*font-weight: 700;*/
+        transition: .2s;
+    }
+
+    .details__content {
+        /*z-index: 0;*/
+        position: relative;
+        /*padding: 32px;*/
+        /*font-size: 18px;*/
+        /*margin-top: -100px;*/
+        transition: .2s;
+    }
+
+    /*.details__content p:last-child {*/
+    /*    margin-bottom: 0;*/
+    /*}*/
+    /*.details__content p:first-child {*/
+    /*    margin-top: 0;*/
+    /*}*/
+</style>
+</html>
