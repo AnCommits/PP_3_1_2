@@ -10,6 +10,7 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/user")
@@ -18,6 +19,7 @@ public class UserControllers {
     private final UserService userService;
 
     private User userToRepeatEdit;
+    private Set<Role> roles;
     private boolean emailError;
 
     public UserControllers(PasswordEncoder passwordEncoder, UserService userService) {
@@ -38,7 +40,9 @@ public class UserControllers {
 
     @GetMapping("/show-edit-user")
     public String showEditUser(@RequestParam long id, ModelMap model) {
-        model.addAttribute("user", userService.getUserById(id));
+        User user = userService.getUserById(id);
+        roles = user.getRoles();
+        model.addAttribute("user", user);
         model.addAttribute("title", "Моя страница");
         model.addAttribute("title2", "Редактирование моих данных");
         return "user-edit";
@@ -63,7 +67,7 @@ public class UserControllers {
             userToRepeatEdit = user;
             return "redirect:/user/show-repeat-edit-user";
         }
-        user.setRoles(Role.getSetOfRoles(1));
+        user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.updateUser(user);
         return "redirect:/user";

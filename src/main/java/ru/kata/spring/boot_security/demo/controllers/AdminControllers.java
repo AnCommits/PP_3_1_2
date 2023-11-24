@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -43,7 +42,7 @@ public class AdminControllers {
         model.addAttribute("user", user);
         model.addAttribute("title", "Страница администратора");
         model.addAttribute("title2", "Редактирование пользователя");
-        return "user-edit";
+        return "admin-edit";
     }
 
     @GetMapping("/show-repeat-edit-user")
@@ -55,7 +54,7 @@ public class AdminControllers {
         model.addAttribute("message", message.toString());
         model.addAttribute("title", "Страница администратора");
         model.addAttribute("title2", "Редактирование пользователя");
-        return "user-edit";
+        return "admin-edit";
     }
 
     @PutMapping("/save-user")
@@ -91,7 +90,7 @@ public class AdminControllers {
         model.addAttribute("user", new User());
         model.addAttribute("title", "Страница администратора");
         model.addAttribute("title2", "Новый пользователь");
-        return "user-edit";
+        return "admin-edit";
     }
 
     @GetMapping("/show-repeat-add-user")
@@ -103,7 +102,7 @@ public class AdminControllers {
         model.addAttribute("message", message.toString());
         model.addAttribute("title", "Страница администратора");
         model.addAttribute("title2", "Редактирование пользователя");
-        return "user-edit";
+        return "admin-edit";
     }
 
     @PostMapping("/save-user")
