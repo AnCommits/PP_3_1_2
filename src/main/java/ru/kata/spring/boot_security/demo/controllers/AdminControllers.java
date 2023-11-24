@@ -118,7 +118,7 @@ public class AdminControllers {
             if (!message.isEmpty()) {
                 message.append("\n");
             }
-            message.append("Отметьте роли.");
+            message.append("Выберите роли.");
         }
         if (!message.isEmpty()) {
             userToRepeatEdit = user;

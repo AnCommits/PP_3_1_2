@@ -24,6 +24,9 @@
                 Е-мэйл
             </th>
             <th style="border-bottom: 1px solid; padding: 4px">
+                Роль
+            </th>
+            <th style="border-bottom: 1px solid; padding: 4px">
                 Дата рожд.
             </th>
             <th style="border-bottom: 1px solid; padding: 4px">
@@ -36,6 +39,7 @@
             <td th:text="${user.firstName}"></td>
             <td th:text="${user.lastName}"></td>
             <td th:text="${user.email}"></td>
+            <td th:text="${user.getMainRole().toLowerCase()}"></td>
             <td style="text-align: center" th:text="${user.birthDateToString()}"></td>
             <td style="text-align: center" th:text="${user.recordDateTimeToString()}"></td>
         </tr>
