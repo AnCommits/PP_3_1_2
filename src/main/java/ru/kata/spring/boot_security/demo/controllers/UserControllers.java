@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.helper.RolesForView;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
@@ -34,6 +35,7 @@ public class UserControllers {
         // After user changes his/her email the email in authentication
         // is not the same as the email in DB
         User user = userService.getUserById(id);
+        user.setRolesForViews(new RolesForView(user.getRolesNames()));
         model.addAttribute("title", "Моя страница");
         model.addAttribute("user", user);
         return "user";

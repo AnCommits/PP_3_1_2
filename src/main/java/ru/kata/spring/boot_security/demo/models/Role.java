@@ -30,16 +30,16 @@ public class Role implements GrantedAuthority {
         setName(name);
     }
 
-    @Override
-    public String getAuthority() {
-        return name;
-    }
-
     public void setName(String name) {
         String nameInUpperCase = name.toUpperCase();
         boolean correctName = Arrays.stream((allRolesTypes))
                 .anyMatch(r -> r.name().equals(nameInUpperCase));
         this.name = correctName ? nameInUpperCase : allRolesTypes[0].name();
+    }
+
+    @Override
+    public String getAuthority() {
+        return name;
     }
 
     /**
@@ -50,9 +50,7 @@ public class Role implements GrantedAuthority {
         USER,
         MANAGER,
         HR,
-        SUPER_MANAGER,
-        SUPER_HR,
-        SUPER_USER,
+        CAN_WRITE,
         ADMIN,
         SUPER_ADMIN
     }

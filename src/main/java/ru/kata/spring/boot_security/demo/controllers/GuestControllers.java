@@ -11,6 +11,9 @@ import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("/guest")
 public class GuestControllers {
@@ -51,7 +54,9 @@ public class GuestControllers {
             userToRepeatEdit = user;
             return "redirect:/guest/show-repeat-add-user";
         }
-        user.setRoles(Role.getListOfRoles(1));
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role("USER"));
+        user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.saveUser(user);
         return "redirect:/";

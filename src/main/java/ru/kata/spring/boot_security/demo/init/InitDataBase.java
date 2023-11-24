@@ -32,18 +32,19 @@ public class InitDataBase {
             initSuperUser();
             initUser();
 
-            initManager();
             initSuperManager();
+            initManager();
 
-            initHr();
             initSuperHr();
+            initHr();
         }
     }
 
     public void initSuperAdmin() {
         List<Role> roles = new ArrayList<>();
         roles.add(new Role("SUPER_ADMIN"));
-        roles.add(new Role("SUPER_USER"));
+        roles.add(new Role("USER"));
+        roles.add(new Role("CAN_WRITE"));
         User user = new User(null, null,
                 "1", passwordEncoder.encode("1"),
                 null, roles, false);
@@ -53,7 +54,8 @@ public class InitDataBase {
     public void initAdmin() {
         List<Role> roles = new ArrayList<>();
         roles.add(new Role("ADMIN"));
-        roles.add(new Role("SUPER_USER"));
+        roles.add(new Role("USER"));
+        roles.add(new Role("CAN_WRITE"));
         User user = new User(null, null,
                 "2", passwordEncoder.encode("2"),
                 null, roles, false);
@@ -62,10 +64,11 @@ public class InitDataBase {
 
     public void initSuperUser() {
         List<Role> roles = new ArrayList<>();
-        roles.add(new Role("SUPER_USER"));
-        User user = new User("Альберт", "Эйнштейн",
+        roles.add(new Role("USER"));
+        roles.add(new Role("CAN_WRITE"));
+        User user = new User("Уильям", "Остин Берт",
                 "3", passwordEncoder.encode("3"),
-                new GregorianCalendar(1879, Calendar.MARCH, 14), roles, false);
+                new GregorianCalendar(1792, Calendar.JUNE, 13), roles, false);
         userService.saveUser(user);
     }
 
@@ -78,41 +81,45 @@ public class InitDataBase {
         userService.saveUser(user);
     }
 
-    public void initManager() {
-        List<Role> roles = new ArrayList<>();
-        roles.add(new Role("MANAGER"));
-        User user = new User("Вася", "Менеджер",
-                "m", passwordEncoder.encode("m"),
-                new GregorianCalendar(1867, Calendar.NOVEMBER, 7), roles, false);
-        userService.saveUser(user);
-    }
-
     public void initSuperManager() {
         List<Role> roles = new ArrayList<>();
         roles.add(new Role("MANAGER"));
-        roles.add(new Role("SUPER_USER"));
+        roles.add(new Role("USER"));
+        roles.add(new Role("CAN_WRITE"));
         User user = new User("Петр", "Супер_менеджер",
                 "sm", passwordEncoder.encode("sm"),
-                new GregorianCalendar(1867, Calendar.NOVEMBER, 7), roles, false);
+                new GregorianCalendar(2000, Calendar.JANUARY, 1), roles, false);
         userService.saveUser(user);
     }
 
-    public void initHr() {
+    public void initManager() {
         List<Role> roles = new ArrayList<>();
-        roles.add(new Role("HR"));
-        User user = new User("Катя", "Катерина",
-                "h", passwordEncoder.encode("h"),
-                new GregorianCalendar(1867, Calendar.NOVEMBER, 7), roles, false);
+        roles.add(new Role("MANAGER"));
+        roles.add(new Role("USER"));
+        User user = new User("Вася", "Менеджер",
+                "m", passwordEncoder.encode("m"),
+                new GregorianCalendar(2000, Calendar.JANUARY, 1), roles, false);
         userService.saveUser(user);
     }
 
     public void initSuperHr() {
         List<Role> roles = new ArrayList<>();
         roles.add(new Role("HR"));
-        roles.add(new Role("SUPER_USER"));
+        roles.add(new Role("USER"));
+        roles.add(new Role("CAN_WRITE"));
         User user = new User("Мария", "Решает_все",
                 "sh", passwordEncoder.encode("sh"),
-                new GregorianCalendar(1867, Calendar.NOVEMBER, 7), roles, false);
+                new GregorianCalendar(2000, Calendar.JANUARY, 1), roles, false);
+        userService.saveUser(user);
+    }
+
+    public void initHr() {
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role("HR"));
+        roles.add(new Role("USER"));
+        User user = new User("Катя", "Катерина",
+                "h", passwordEncoder.encode("h"),
+                new GregorianCalendar(2000, Calendar.JANUARY, 1), roles, false);
         userService.saveUser(user);
     }
 }
