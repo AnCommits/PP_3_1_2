@@ -37,8 +37,8 @@
     <tbody>
     <tr th:each="user : ${users}"
         th:with="st = 'border-bottom: 1px solid; color: ' + (${user.isLocked()} ? 'red' : 'black') +';'">
-        <td th:style="${st}" th:text="${user.firstName != null} ? ${user.firstName} : '-'"></td>
-        <td th:style="${st}" th:text="${user.lastName != null} ? ${user.lastName} : '-'"></td>
+        <td th:style="${st}" th:text="${user.firstName}"></td>
+        <td th:style="${st}" th:text="${user.lastName}"></td>
         <td th:style="${st}" th:text="${user.email}"></td>
         <td th:style="${st}">
             <div th:with="roles=${user.rolesForViews}">
@@ -64,7 +64,7 @@
                             </span>
                         </span>
                         <span sec:authorize="!hasAuthority('SUPER_ADMIN')">
-                            <span th:switch="${user.hasRole('ADMIN')}">
+                            <span th:switch="${user.hasRole('ADMIN')} OR ${user.hasRole('SUPER_ADMIN')}">
                                 <input th:case="true" type="checkbox" disabled="disabled">
                                 <input th:case="false" type="checkbox" class="checkbox" onclick="submit()">
                             </span>
@@ -82,7 +82,7 @@
                 </span>
             </span>
             <span sec:authorize="!hasAuthority('SUPER_ADMIN')">
-                    <span th:switch="${user.hasRole('ADMIN')}">
+                    <span th:switch="${user.hasRole('ADMIN')} OR ${user.hasRole('SUPER_ADMIN')}">
                     <a th:attr="href='#'" class="button" style="pointer-events: none"
                        th:case="true">Редактировать</a>
                     <a th:attr="href='/admin/show-edit-user?id=' + ${user.id}" class="button"
@@ -99,7 +99,7 @@
                     </span>
                 </span>
                 <span sec:authorize="!hasAuthority('SUPER_ADMIN')">
-                    <span th:switch="${user.hasRole('ADMIN')}">
+                    <span th:switch="${user.hasRole('ADMIN')} OR ${user.hasRole('SUPER_ADMIN')}">
                         <button type="submit" disabled="disabled" th:case="true">Удалить</button>
                         <button type="submit" class="button" th:case="false">Удалить</button>
                     </span>

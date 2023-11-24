@@ -21,7 +21,7 @@
                 <td><a href="/guest/sign-up" class="button">Зарегистрироваться</a></td>
             </span>
             <span sec:authorize="isAuthenticated()">
-                <td sec:authorize="hasAuthority('ADMIN')">
+                <td sec:authorize="hasAnyAuthority('SUPER_ADMIN', 'ADMIN')">
                     <a href="/admin" class="button">Страница&nbsp;администатора</a>
                 </td>
                 <td><a href="/user" class="button">Моя&nbsp;страница</a></td>

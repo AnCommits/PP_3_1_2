@@ -6,7 +6,7 @@
                 th:text="${title}">
             </td>
             <td><a class="button" href="/">Главная</a></td>
-            <td sec:authorize="hasAuthority('ADMIN')">
+            <td sec:authorize="hasAnyAuthority('SUPER_ADMIN', 'ADMIN')">
                 <a href="/admin" class="button">Страница&nbsp;администратора</a>
             </td>
             <td sec:authorize="!hasAuthority('SUPER_ADMIN')">
