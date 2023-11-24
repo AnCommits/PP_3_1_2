@@ -7,9 +7,7 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.annotation.PostConstruct;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class InitDataBase {
@@ -30,13 +28,22 @@ public class InitDataBase {
         if (userService.countUsers() == 0) {
             initSuperAdmin();
             initAdmin();
+
             initSuperUser();
             initUser();
+
+            initManager();
+            initSuperManager();
+
+            initHr();
+            initSuperHr();
         }
     }
 
     public void initSuperAdmin() {
-        Set<Role> roles = Role.getSetOfRoles(4);
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role("SUPER_ADMIN"));
+        roles.add(new Role("SUPER_USER"));
         User user = new User(null, null,
                 "1", passwordEncoder.encode("1"),
                 null, roles, false);
@@ -44,7 +51,9 @@ public class InitDataBase {
     }
 
     public void initAdmin() {
-        Set<Role> roles = Role.getSetOfRoles(3);
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role("ADMIN"));
+        roles.add(new Role("SUPER_USER"));
         User user = new User(null, null,
                 "2", passwordEncoder.encode("2"),
                 null, roles, false);
@@ -52,7 +61,8 @@ public class InitDataBase {
     }
 
     public void initSuperUser() {
-        Set<Role> roles = Role.getSetOfRoles(2);
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role("SUPER_USER"));
         User user = new User("Альберт", "Эйнштейн",
                 "3", passwordEncoder.encode("3"),
                 new GregorianCalendar(1879, Calendar.MARCH, 14), roles, false);
@@ -60,9 +70,48 @@ public class InitDataBase {
     }
 
     public void initUser() {
-        Set<Role> roles = Role.getSetOfRoles(1);
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role("USER"));
         User user = new User("Мария", "Кюри",
                 "4", passwordEncoder.encode("4"),
+                new GregorianCalendar(1867, Calendar.NOVEMBER, 7), roles, false);
+        userService.saveUser(user);
+    }
+
+    public void initManager() {
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role("MANAGER"));
+        User user = new User("Вася", "Менеджер",
+                "m", passwordEncoder.encode("m"),
+                new GregorianCalendar(1867, Calendar.NOVEMBER, 7), roles, false);
+        userService.saveUser(user);
+    }
+
+    public void initSuperManager() {
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role("MANAGER"));
+        roles.add(new Role("SUPER_USER"));
+        User user = new User("Петр", "Супер_менеджер",
+                "sm", passwordEncoder.encode("sm"),
+                new GregorianCalendar(1867, Calendar.NOVEMBER, 7), roles, false);
+        userService.saveUser(user);
+    }
+
+    public void initHr() {
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role("HR"));
+        User user = new User("Катя", "Катерина",
+                "h", passwordEncoder.encode("h"),
+                new GregorianCalendar(1867, Calendar.NOVEMBER, 7), roles, false);
+        userService.saveUser(user);
+    }
+
+    public void initSuperHr() {
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role("HR"));
+        roles.add(new Role("SUPER_USER"));
+        User user = new User("Мария", "Решает_все",
+                "sh", passwordEncoder.encode("sh"),
                 new GregorianCalendar(1867, Calendar.NOVEMBER, 7), roles, false);
         userService.saveUser(user);
     }

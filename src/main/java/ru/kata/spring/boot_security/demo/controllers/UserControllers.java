@@ -10,6 +10,7 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -19,7 +20,7 @@ public class UserControllers {
     private final UserService userService;
 
     private User userToRepeatEdit;
-    private Set<Role> roles;
+    private List<Role> roles;
     private boolean emailError;
 
     public UserControllers(PasswordEncoder passwordEncoder, UserService userService) {

@@ -43,25 +43,27 @@ public class Role implements GrantedAuthority {
     }
 
     /**
-     * Roles preferably start with the USER,
-     * since if the role is specified incorrectly, the first one is installed.
+     * Roles preferably start with minimum privileges
+     * since if the role is specified incorrectly the first one is installed.
      */
     public enum RolesType {
-        USER,           // can read
-        SUPER_USER,     // + can update
-        ADMIN,          // controls users
-        SUPER_ADMIN     // + controls admins, can't be removed or locked
+        USER,
+        MANAGER,
+        HR,
+        SUPER_MANAGER,
+        SUPER_HR,
+        SUPER_USER,
+        ADMIN,
+        SUPER_ADMIN
     }
 
     // todo delete
 
-    public static Set<Role> getSetOfRoles(int numberOfRoles) {
-        Set<Role> roles = new HashSet<>();
-        IntStream.range(0, numberOfRoles).mapToObj(n -> new Role(allRolesTypes[n].name())).forEach(roles::add);
-        return roles;
-    }
-
-    // todo delete
+//    public static Set<Role> getSetOfRoles(int numberOfRoles) {
+//        Set<Role> roles = new HashSet<>();
+//        IntStream.range(0, numberOfRoles).mapToObj(n -> new Role(allRolesTypes[n].name())).forEach(roles::add);
+//        return roles;
+//    }
 
     public static List<Role> getListOfRoles(int numberOfRoles) {
         List<Role> roles = new ArrayList<>();

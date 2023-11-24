@@ -48,7 +48,7 @@ public class User implements UserDetails {
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private List<Role> roles;
 
     @Transient
     private RolesForView rolesForViews;
@@ -56,7 +56,7 @@ public class User implements UserDetails {
     private boolean locked;
 
     public User(String firstName, String lastName, String email, String password,
-                Calendar birthDate, Set<Role> roles, boolean locked) {
+                Calendar birthDate, List<Role> roles, boolean locked) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

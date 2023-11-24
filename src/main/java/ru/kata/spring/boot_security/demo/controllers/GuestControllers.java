@@ -51,7 +51,7 @@ public class GuestControllers {
             userToRepeatEdit = user;
             return "redirect:/guest/show-repeat-add-user";
         }
-        user.setRoles(Role.getSetOfRoles(1));
+        user.setRoles(Role.getListOfRoles(1));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.saveUser(user);
         return "redirect:/";
