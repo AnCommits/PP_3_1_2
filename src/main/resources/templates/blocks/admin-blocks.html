@@ -107,9 +107,9 @@
         <td>
             <table style="margin: auto; padding-top: 16px">
                 <tbody>
-                <tr th:if="${email_err}">
+                <tr>
                     <td colspan="3" style="color: red; text-align: center"
-                        th:text="${user.email} + ' уже зарегистрирован. Используйте другой е-мэйл.'">
+                        th:text="${message}">
                     </td>
                 </tr>
                 <tr>

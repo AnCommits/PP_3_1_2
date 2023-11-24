@@ -11,7 +11,6 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -20,7 +19,7 @@ public class AdminControllers {
     private final UserService userService;
 
     private User userToRepeatEdit;
-    private boolean emailError;
+    private StringBuilder message;
 
     public AdminControllers(PasswordEncoder passwordEncoder, UserService userService) {
         this.passwordEncoder = passwordEncoder;
@@ -37,9 +36,7 @@ public class AdminControllers {
 
     @GetMapping("/show-edit-user")
     public String showEditUser(@RequestParam long id, Authentication authentication, ModelMap model) {
-        // After updating data the email and/or roles in authentication are not the same as in DB
-        long editorIdFromPrincipal = ((User) authentication.getPrincipal()).getId();
-        User editor = userService.getUserById(editorIdFromPrincipal);
+        User editor = ((User) authentication.getPrincipal());
         User user = userService.getUserById(id);
         List<Role> roles = Role.getListOfRoles(editor.getMainRole().equals("SUPER_ADMIN") ? 3 : 2);
         model.addAttribute("aRoles", roles);
@@ -51,12 +48,11 @@ public class AdminControllers {
 
     @GetMapping("/show-repeat-edit-user")
     public String showRepeatEditUser(ModelMap model, Authentication authentication) {
-        List<String> admRoles = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority).toList();
-        List<Role> roles = Role.getListOfRoles(admRoles.contains("SUPER_ADMIN") ? 3 : 2);
+        User editor = ((User) authentication.getPrincipal());
+        List<Role> roles = Role.getListOfRoles(editor.getMainRole().equals("SUPER_ADMIN") ? 3 : 2);
         model.addAttribute("aRoles", roles);
         model.addAttribute("user", userToRepeatEdit);
-        model.addAttribute("email_err", emailError);
+        model.addAttribute("message", message.toString());
         model.addAttribute("title", "Страница администратора");
         model.addAttribute("title2", "Редактирование пользователя");
         return "user-edit";
@@ -64,11 +60,21 @@ public class AdminControllers {
 
     @PutMapping("/save-user")
     public String updateUser(@ModelAttribute("user") User user) {
+        message = new StringBuilder();
         long idFromForm = user.getId();
         String emailFromForm = user.getEmail();
         User userFromDb = userService.getUserByEmail(emailFromForm);
-        emailError = userFromDb != null && idFromForm != userFromDb.getId();
+        boolean emailError = userFromDb != null && idFromForm != userFromDb.getId();
         if (emailError) {
+            message.append(user.getEmail()).append(" уже зарегистрирован. Используйте другой е-мэйл.");
+        }
+        if (user.getRoles().isEmpty()) {
+            if (!message.isEmpty()) {
+                message.append("\n");
+            }
+            message.append("Отметьте роли.");
+        }
+        if (!message.isEmpty()) {
             userToRepeatEdit = user;
             return "redirect:/admin/show-repeat-edit-user";
         }
@@ -79,9 +85,8 @@ public class AdminControllers {
 
     @GetMapping("/show-add-user")
     public String showAddUser(ModelMap model, Authentication authentication) {
-        List<String> admRoles = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority).toList();
-        List<Role> roles = Role.getListOfRoles(admRoles.contains("SUPER_ADMIN") ? 3 : 2);
+        User editor = ((User) authentication.getPrincipal());
+        List<Role> roles = Role.getListOfRoles(editor.getMainRole().equals("SUPER_ADMIN") ? 3 : 2);
         model.addAttribute("aRoles", roles);
         model.addAttribute("user", new User());
         model.addAttribute("title", "Страница администратора");
@@ -91,23 +96,32 @@ public class AdminControllers {
 
     @GetMapping("/show-repeat-add-user")
     public String showRepeatAddUser(ModelMap model, Authentication authentication) {
-        List<String> admRoles = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority).toList();
-        List<Role> roles = Role.getListOfRoles(admRoles.contains("SUPER_ADMIN") ? 3 : 2);
+        User editor = ((User) authentication.getPrincipal());
+        List<Role> roles = Role.getListOfRoles(editor.getMainRole().equals("SUPER_ADMIN") ? 3 : 2);
         model.addAttribute("aRoles", roles);
         model.addAttribute("user", userToRepeatEdit);
-        model.addAttribute("email_err", emailError);
+        model.addAttribute("message", message.toString());
         model.addAttribute("title", "Страница администратора");
-        model.addAttribute("title2", "Новый пользователь");
+        model.addAttribute("title2", "Редактирование пользователя");
         return "user-edit";
     }
 
     @PostMapping("/save-user")
     public String saveUser(@ModelAttribute("user") User user) {
+        message = new StringBuilder();
         String emailFromForm = user.getEmail();
         User userFromDb = userService.getUserByEmail(emailFromForm);
-        emailError = userFromDb != null;
+        boolean emailError = userFromDb != null;
         if (emailError) {
+            message.append(user.getEmail()).append(" уже зарегистрирован. Используйте другой е-мэйл.");
+        }
+        if (user.getRoles().isEmpty()) {
+            if (!message.isEmpty()) {
+                message.append("\n");
+            }
+            message.append("Отметьте роли.");
+        }
+        if (!message.isEmpty()) {
             userToRepeatEdit = user;
             return "redirect:/admin/show-repeat-add-user";
         }
@@ -116,7 +130,7 @@ public class AdminControllers {
         return "redirect:/admin";
     }
 
-        @PutMapping("/change-ban/{id}")
+    @PutMapping("/change-ban/{id}")
     public String changeUserBan(@PathVariable long id) {
         User user = userService.getUserById(id);
         user.setLocked(!user.isLocked());
