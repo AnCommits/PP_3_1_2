@@ -27,9 +27,13 @@ public class Role implements GrantedAuthority {
     public final static RolesType[] allRolesTypes = RolesType.values();
 
     @Transient
-    public final static List<Role> allRoles = new ArrayList<>();;
+    private final static List<Role> allRoles = new ArrayList<>();;
     static {
         Arrays.stream(allRolesTypes).map(r -> new Role(r.name())).forEach(allRoles::add);
+    }
+
+    public static List<Role> allRoles() {
+        return allRoles;
     }
 
     public Role(String name) {

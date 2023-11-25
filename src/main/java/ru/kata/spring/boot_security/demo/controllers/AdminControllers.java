@@ -9,6 +9,7 @@ import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -37,7 +38,7 @@ public class AdminControllers {
     @GetMapping("/show-edit-user")
     public String showEditUser(@RequestParam long id, ModelMap model) {
         User user = userService.getUserById(id);
-        List<Role> roles = Role.allRoles;
+        List<Role> roles = Role.allRoles();
         roles.remove(new Role("ADMIN"));
         model.addAttribute("aRoles", roles);
         model.addAttribute("user", user);
@@ -48,7 +49,8 @@ public class AdminControllers {
 
     @GetMapping("/show-repeat-edit-user")
     public String showRepeatEditUser(ModelMap model) {
-        List<Role> roles = userToRepeatEdit.getRoles();
+        List<Role> roles = Role.allRoles();
+        roles.remove(new Role("ADMIN"));
         model.addAttribute("aRoles", roles);
         model.addAttribute("user", userToRepeatEdit);
         model.addAttribute("message", message.toString());
@@ -84,23 +86,12 @@ public class AdminControllers {
 
     @GetMapping("/show-add-user")
     public String showAddUser(ModelMap model) {
-        List<Role> roles = Role.allRoles;
+        List<Role> roles = Role.allRoles();
         roles.remove(new Role("ADMIN"));
         model.addAttribute("aRoles", roles);
         model.addAttribute("user", new User());
         model.addAttribute("title", "Страница администратора");
         model.addAttribute("title2", "Новый пользователь");
-        return "admin-edit";
-    }
-
-    @GetMapping("/show-repeat-add-user")
-    public String showRepeatAddUser(ModelMap model) {
-        List<Role> roles = userToRepeatEdit.getRoles();
-        model.addAttribute("aRoles", roles);
-        model.addAttribute("user", userToRepeatEdit);
-        model.addAttribute("message", message.toString());
-        model.addAttribute("title", "Страница администратора");
-        model.addAttribute("title2", "Редактирование пользователя");
         return "admin-edit";
     }
 
@@ -121,7 +112,7 @@ public class AdminControllers {
         }
         if (!message.isEmpty()) {
             userToRepeatEdit = user;
-            return "redirect:/admin/show-repeat-add-user";
+            return "redirect:/admin/show-repeat-edit-user";
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.saveUser(user);
